@@ -21,12 +21,14 @@
     float: left;
     width: 800px;
     margin-bottom: 10px;
-    padding: 5px;
+    padding: 5px 10px;
     border: 1px solid #bbb;
     border-radius: 5px;
 }
 
-#cs_head *
+#cs_head #cs_join,
+#cs_head #cs_profile_info,
+#cs_head #cs_write
 {
     float: left;
 }
@@ -116,7 +118,7 @@
 
 .cs_content .cs_delete
 {
-    width: 60px;
+    width: 40px;
     margin: 0 5px;
 }
 

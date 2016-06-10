@@ -19,13 +19,14 @@
     <body>
         <div id="cs_app">
             <div id="cs_head">
-                <div id="cs_join">
+                <div id="cs_join" class="">
                     <button class="btn" type="button" name="button" data-toggle="modal" data-target="#cs_join_modal">회원가입</button>
                 </div>
-                <div id="cs_profile_info" class="cs_hidden">
-                    <button class="btn" type="button" name="button">프로필 수정</button>
+                <div id="cs_profile_info" class="">
+                    <span class="cs_name">Harry(Software Engineer)</span>
+                    <button class="btn" type="button" name="button" data-toggle="modal" data-target="#cs_join_modal">프로필 수정</button>
                 </div>
-                <button class="btn" type="button" name="button" data-toggle="modal" data-target="#cs_write_modal">글쓰기</button>
+                <button id="cs_write" class="btn" type="button" name="button" data-toggle="modal" data-target="#cs_write_modal">글쓰기</button>
             </div>
             <div id="cs_contents_wrap">
                 <div id="cs_contents">
@@ -179,6 +180,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary">회원가입</button>
+                <button type="button" class="btn btn-primary">수정</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
               </div>
             </div>
