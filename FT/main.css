@@ -83,6 +83,7 @@
 .cs_content .cs_profile,
 .cs_content .cs_comment,
 .cs_content .cs_opinion,
+.cs_content .cs_delete,
 .cs_content .cs_time
 {
     align-self: center;
@@ -105,12 +106,24 @@
 
 .cs_content .cs_comment
 {
-    width: 300px;
+    width: 250px;
 }
 
 .cs_content .cs_opinion
 {
     width: 150px;
+}
+
+.cs_content .cs_delete
+{
+    width: 60px;
+    margin: 0 5px;
+}
+
+.cs_content .cs_delete.cs_hidden
+{
+    visibility: hidden;
+    display: inherit !important;
 }
 
 .cs_content .cs_opinion button

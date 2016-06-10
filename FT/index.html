@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
         <!-- Latest compiled and minified JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
         <link rel="stylesheet" href="main.css">
@@ -19,12 +20,12 @@
         <div id="cs_app">
             <div id="cs_head">
                 <div id="cs_join">
-                    <button class="btn" type="button" name="button">회원가입</button>
+                    <button class="btn" type="button" name="button" data-toggle="modal" data-target="#cs_join_modal">회원가입</button>
                 </div>
                 <div id="cs_profile_info" class="cs_hidden">
-                    <button class="btn" type="button" name="button">회원정보</button>
+                    <button class="btn" type="button" name="button">프로필 수정</button>
                 </div>
-                <button class="btn" type="button" name="button">글쓰기</button>
+                <button class="btn" type="button" name="button" data-toggle="modal" data-target="#cs_write_modal">글쓰기</button>
             </div>
             <div id="cs_contents_wrap">
                 <div id="cs_contents">
@@ -38,6 +39,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -50,6 +52,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete cs_hidden btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -62,6 +65,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -74,6 +78,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete cs_hidden btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -86,6 +91,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -98,6 +104,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete cs_hidden btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -110,6 +117,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -122,6 +130,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete cs_hidden btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -134,6 +143,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
+                        <button class="cs_delete btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                     <div class="cs_content">
@@ -146,66 +156,7 @@
                             <button class="btn btn-sm" type="button" name="button">추천(10)</button>
                             <button class="btn btn-sm" type="button" name="button">반대(100)</button>
                         </div>
-                        <time class="cs_time">5분전</time>
-                    </div>
-                    <div class="cs_content">
-                        <div class="cs_profile">
-                            <img class="cs_image" src="" alt="" />
-                            <span class="cs_name">Harry</span>
-                        </div>
-                        <span class="cs_comment">Go to Work!</span>
-                        <div class="cs_opinion">
-                            <button class="btn btn-sm" type="button" name="button">추천(10)</button>
-                            <button class="btn btn-sm" type="button" name="button">반대(100)</button>
-                        </div>
-                        <time class="cs_time">5분전</time>
-                    </div>
-                    <div class="cs_content">
-                        <div class="cs_profile">
-                            <img class="cs_image" src="" alt="" />
-                            <span class="cs_name">Harry</span>
-                        </div>
-                        <span class="cs_comment">Go to Work!</span>
-                        <div class="cs_opinion">
-                            <button class="btn btn-sm" type="button" name="button">추천(10)</button>
-                            <button class="btn btn-sm" type="button" name="button">반대(100)</button>
-                        </div>
-                        <time class="cs_time">5분전</time>
-                    </div>
-                    <div class="cs_content">
-                        <div class="cs_profile">
-                            <img class="cs_image" src="" alt="" />
-                            <span class="cs_name">Harry</span>
-                        </div>
-                        <span class="cs_comment">Go to Work!</span>
-                        <div class="cs_opinion">
-                            <button class="btn btn-sm" type="button" name="button">추천(10)</button>
-                            <button class="btn btn-sm" type="button" name="button">반대(100)</button>
-                        </div>
-                        <time class="cs_time">5분전</time>
-                    </div>
-                    <div class="cs_content">
-                        <div class="cs_profile">
-                            <img class="cs_image" src="" alt="" />
-                            <span class="cs_name">Harry</span>
-                        </div>
-                        <span class="cs_comment">Go to Work!</span>
-                        <div class="cs_opinion">
-                            <button class="btn btn-sm" type="button" name="button">추천(10)</button>
-                            <button class="btn btn-sm" type="button" name="button">반대(100)</button>
-                        </div>
-                        <time class="cs_time">5분전</time>
-                    </div>
-                    <div class="cs_content">
-                        <div class="cs_profile">
-                            <img class="cs_image" src="" alt="" />
-                            <span class="cs_name">Harry</span>
-                        </div>
-                        <span class="cs_comment">Go to Work!</span>
-                        <div class="cs_opinion">
-                            <button class="btn btn-sm" type="button" name="button">추천(10)</button>
-                            <button class="btn btn-sm" type="button" name="button">반대(100)</button>
-                        </div>
+                        <button class="cs_delete cs_hidden btn btn-sm" type="button" name="button">삭제</button>
                         <time class="cs_time">5분전</time>
                     </div>
                 </div>
@@ -213,6 +164,61 @@
                     <span>1</span>
                 </div>
             </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="cs_join_modal" tabindex="-1" role="dialog" aria-labelledby="cs_join_modal_label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="cs_join_modal_label">회원가입</h4>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">회원가입</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="cs_login_modal" tabindex="-1" role="dialog" aria-labelledby="cs_login_modal_label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="cs_login_modal_label">로그인</h4>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">로그인</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="cs_write_modal" tabindex="-1" role="dialog" aria-labelledby="cs_write_modal_label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="cs_write_modal_label">댓글등록</h4>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">저장</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+              </div>
+            </div>
+          </div>
         </div>
     </body>
 </html>
