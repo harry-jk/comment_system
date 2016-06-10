@@ -1,0 +1,124 @@
+*
+{
+    margin: 0;
+}
+
+.cs_hidden
+{
+    display: none !important;
+}
+
+#cs_app
+{
+    float: none;
+    width: 800px;
+    content: '';
+    margin: 10px auto 10px auto;
+}
+
+#cs_head
+{
+    float: left;
+    width: 800px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+}
+
+#cs_head *
+{
+    float: left;
+}
+
+#cs_head button
+{
+    margin: 10px 5px;
+}
+#cs_contents_wrap
+{
+    float: left;
+    width: 800px;
+    height: 600px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    overflow-y: hidden;
+}
+
+#cs_contents_wrap #cs_contents
+{
+    float: left;
+    width: 800px;
+    height: 560px;
+    overflow-y: scroll;
+}
+
+#cs_contents_wrap #cs_indicator
+{
+    display: flex;
+    float: left;
+    height: 40px;
+    width: 800px;
+    border-top: 1px solid #bbb;
+}
+
+#cs_contents_wrap #cs_indicator span
+{
+    float: left;
+    width: 100%;
+    align-self: center;
+    text-align: center;
+}
+
+#cs_contents .cs_content
+{
+    display: flex;
+    float: left;
+    width: 800px;
+    padding: 10px 10px;
+    min-height: 70px;
+    border-bottom: 1px solid #bbb;
+}
+
+.cs_content .cs_profile,
+.cs_content .cs_comment,
+.cs_content .cs_opinion,
+.cs_content .cs_time
+{
+    align-self: center;
+    float: left;
+    margin: 0 5px;
+}
+.cs_content .cs_profile
+{
+    width: 200px;
+}
+
+.cs_content .cs_profile .cs_image
+{
+    width: 70px;
+}
+.cs_content .cs_profile .cs_name
+{
+    margin-left: 10px;
+}
+
+.cs_content .cs_comment
+{
+    width: 300px;
+}
+
+.cs_content .cs_opinion
+{
+    width: 150px;
+}
+
+.cs_content .cs_opinion button
+{
+    width: 70px;
+}
+
+.cs_content .cs_time
+{
+    width: 100px;
+}
