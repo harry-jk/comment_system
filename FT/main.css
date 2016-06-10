@@ -44,7 +44,7 @@
     height: 600px;
     border: 1px solid #bbb;
     border-radius: 5px;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 #cs_contents_wrap #cs_contents
@@ -109,6 +109,7 @@
 .cs_content .cs_comment
 {
     width: 250px;
+    overflow-wrap: break-word;
 }
 
 .cs_content .cs_opinion
