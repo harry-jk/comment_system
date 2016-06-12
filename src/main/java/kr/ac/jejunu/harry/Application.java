@@ -22,6 +22,7 @@ public class Application extends WebMvcConfigurerAdapter {
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.enableContentNegotiation(new MappingJackson2JsonView());
     }
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
