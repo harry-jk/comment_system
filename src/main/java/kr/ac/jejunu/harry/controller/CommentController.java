@@ -1,5 +1,6 @@
 package kr.ac.jejunu.harry.controller;
 
+import kr.ac.jejunu.harry.annotation.auth.AuthRequired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,18 +30,21 @@ public class CommentController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
+    @AuthRequired
     public void save(Model model) {
         logger.info("save");
         model.addAttribute("save");
     }
 
     @RequestMapping(path = "/{id:[0-9]+}/like", method = RequestMethod.GET)
+    @AuthRequired
     public void like(@PathVariable Integer id, Model model) {
         logger.info("like: " + id);
         model.addAttribute("like: " + id);
     }
 
     @RequestMapping(path = "/{id:[0-9]+}/dislike", method = RequestMethod.GET)
+    @AuthRequired
     public void dislike(@PathVariable Integer id, Model model) {
         logger.info("dislike: " + id);
         model.addAttribute("dislike: " + id);

@@ -1,5 +1,6 @@
 package kr.ac.jejunu.harry.controller;
 
+import kr.ac.jejunu.harry.annotation.auth.AuthRequired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,7 @@ public class UserController {
     }
 
     @RequestMapping(path = "/{id:[0-9]+}", method = RequestMethod.POST)
+    @AuthRequired
     public void edit(@PathVariable Integer id, Model model) {
         logger.info("edit: " + id);
         model.addAttribute("edit: " + id);
