@@ -56,6 +56,7 @@ public class ResponseBuilder {
 
     public Model buildWithModel(Model model) {
         ModelMap map = buildToModelMap();
+        model.asMap().clear();
         model.addAllAttributes(map);
         return model;
     }

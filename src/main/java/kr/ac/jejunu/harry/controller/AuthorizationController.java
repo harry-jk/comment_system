@@ -9,9 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,14 +26,13 @@ public class AuthorizationController {
     @Autowired
     UserRepository userRepository;
 
-    @RequestMapping(path = "/signin", method = RequestMethod.GET)
+    @RequestMapping(path = "/signin", method = RequestMethod.POST)
     public void signin(@RequestParam String id, @RequestParam String password,
                        HttpServletRequest request, HttpSession session,
                        Model model) {
         User user = userRepository.findByIdAndPassword(id, password);
         ResponseBuilder builder = new ResponseBuilder(request);
         if(user != null) {
-            logger.info("Start Session");
             session.setAttribute("isSignin", true);
             session.setAttribute("uid", user.getUid());
             builder.addAttribute(user);
@@ -49,17 +47,30 @@ public class AuthorizationController {
                       Model model) {
         Object isSignin = session.getAttribute("isSignin");
         if(isSignin != null && isSignin instanceof Boolean) {
-            logger.info("End Session");
-            session.removeAttribute("isSignin");
-            session.removeAttribute("uid");
+            session.invalidate();
         }
         ResponseBuilder builder = new ResponseBuilder(request);
+        builder.buildWithModel(model);
     }
 
     @RequestMapping(path = "/signup", method = RequestMethod.POST)
-    public void signup(@RequestParam String id,
-                       @RequestParam String password,
+    public void signup(@RequestPayload User user,
                        HttpServletRequest request,
                        Model model) {
+        ResponseBuilder builder = new ResponseBuilder(request);
+        String id = user.getId();
+        String password = user.getPassword();
+        String name = user.getName();
+        if(id == null || id.getBytes().length > 20 || id.getBytes().length < 3) {
+            builder.setStatusCode(ResponseCode.BAD_REQUEST, "ID length is must be more then 3, less then 20");
+        } else if(password == null || password.getBytes().length > 20 || password.getBytes().length < 3) {
+            builder.setStatusCode(ResponseCode.BAD_REQUEST, "Password length is must be more then 3, less then 20");
+        } else if(name == null || name.getBytes().length > 20 || name.getBytes().length < 1) {
+            builder.setStatusCode(ResponseCode.BAD_REQUEST, "Name length is must be more then 1, less then 20");
+        } else {
+            User savedUser = userRepository.save(user);
+            builder.addAttribute(savedUser);
+        }
+        builder.buildWithModel(model);
     }
 }
