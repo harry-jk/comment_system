@@ -118,7 +118,7 @@
 }
 ```
 
-#### User
+#### Users
 ----
 - __GET__ /users
  - __Parameter__
@@ -185,6 +185,93 @@
 		"name": "Harry",
 		"description": "Software Engineer",
 		"profile_image_url": "/resources/harry.jpg"
+	}
+}
+```
+
+#### Comments
+----
+- __GET__ /comments
+ - __Parameter__
+ 
+ |Key	|Value Type	|Required	|Default	|
+ |------|-----------|-----------|-----------|
+ |page	|Integer	|no			|1			|
+ |size	|Integer	|no			|15			|
+ - __Response__
+```json
+{
+	"request": "/comments",
+	"status": 200,
+	"size": 15,
+	"totalPage": 1,
+	"page": 1,
+	"last": true,
+	"first": true,
+	"comments": [
+		{
+			"cid": 1,
+			"user": {
+				"uid": 1,
+				"id": "harry.jk",
+				"name": "Harry",
+				"description": "Software Engineer",
+				"profile_image_url": "/resources/harry.jpg"
+			},
+			"comment": "i'm Harry!",
+			"like": 1,
+			"dislike": 0,
+			"created_at": "2016-06-15 15:42:29"
+		}
+	]
+}
+```
+- __POST__ /comments
+ - __Parameter__
+ 
+ |Key		|Value Type	|Required	|Default	|
+ |----------|-----------|-----------|-----------|
+ |commentStr|String		|yes		|			|
+ - __Response__
+```json
+{
+	"request": "/comments",
+	"status": 200,
+	"comment": {
+		"cid": 122,
+		"user": {
+			"uid": 1,
+			"id": "harry.jk",
+			"name": "Harry",
+			"description": "Software Engineer",
+			"profile_image_url": "/resources/harry.jpg"
+		},
+		"comment": "I'm Harry!",
+		"like": 0,
+		"dislike": 0,
+		"created_at": "2016-06-16 04:43:10"
+	}
+}
+```
+- __GET__ /comments/{id:[0-9]+}
+ - __Response__
+```json
+{
+	"request": "/comments/1",
+	"status": 200,
+	"comment": {
+		"cid": 1,
+		"user": {
+			"uid": 1,
+			"id": "harry.jk",
+			"name": "Harry",
+			"description": "Software Engineer",
+			"profile_image_url": "/resources/harry.jpg"
+		},
+		"comment": "i'm Harry!",
+		"like": 1,
+		"dislike": 0,
+		"created_at": "2016-06-15 15:42:29"
 	}
 }
 ```
