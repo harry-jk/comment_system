@@ -65,70 +65,37 @@
 #### Authorization
 ----
 - __POST__ /auth/signin
-	- Success
-	```json
-	{
-		"request": "/auth/signin",
-		"status": 200,
-		"user": {
-			"uid": 1,
-			"id": "harry.jk",
-			"name": "Harry",
-			"description": "Software Engineer",
-			"profile_image_url": "/resources/test.jpg"
-		}
+```json
+{
+	"request": "/auth/signin",
+	"status": 200,
+	"user": {
+		"uid": 1,
+		"id": "harry.jk",
+		"name": "Harry",
+		"description": "Software Engineer",
+		"profile_image_url": "/resources/test.jpg"
 	}
-	```
-	- Account Not Found
-	```json
-	{
-	  	"request": "/auth/signin",
-	  	"reason": "Account Not Found",
-	  	"status": 409
-	}
-	```
+}
+```
 - __GET__ /auth/signout
-	- Success
-	```json
-	{
-		"request": "/auth/signout",
-	  	"status": 200
-	}
-	```
+```json
+{
+	"request": "/auth/signout",
+	"status": 200
+}
+```
 - __POST__ /auth/signup
-	- Success
-	```json
-	{
-	  	"request": "/auth/signup",
-	  	"user": {
-			"uid": 50,
-			"id": "harry.jk",
-			"name": "Harry",
-			"description": "Software Engineer",
-			"profile_image_url": "/resources/harry.jpg"
-		},
-		"status": 200
-	}
-	```
-	- ID, Password, Name Exception
-	```json
-	{
-		"request": "/auth/signup",
-	  	"reason": "ID length is must be more then 3, less then 20",
-	  	"status": 400
-	}
-	```
-	```json
-	{
-		"request": "/auth/signup",
-		"reason": "Password length is must be more then 3, less then 20",
-		"status": 400
-	}
-	```
-	```json
-	{
-		"request": "/auth/signup",
-		"reason": "Name length is must be more then 1, less then 20",
-		"status": 400
-	}
-	```
+```json
+{
+	"request": "/auth/signup",
+	"user": {
+		"uid": 50,
+		"id": "harry.jk",
+		"name": "Harry",
+		"description": "Software Engineer",
+		"profile_image_url": "/resources/harry.jpg"
+	},
+	"status": 200
+}
+```

@@ -4,12 +4,12 @@ import kr.ac.jejunu.harry.model.User;
 import kr.ac.jejunu.harry.repository.UserRepository;
 import kr.ac.jejunu.harry.response.ResponseBuilder;
 import kr.ac.jejunu.harry.response.ResponseCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,18 +21,16 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping(path = "/auth")
 public class AuthorizationController {
-    private final static Logger logger = LoggerFactory.getLogger(AuthorizationController.class);
-
     @Autowired
     UserRepository userRepository;
 
     @RequestMapping(path = "/signin", method = RequestMethod.POST)
     public void signin(@RequestParam String id, @RequestParam String password,
-                       HttpServletRequest request, HttpSession session,
-                       Model model) {
+                       HttpServletRequest request, Model model) {
         User user = userRepository.findByIdAndPassword(id, password);
         ResponseBuilder builder = new ResponseBuilder(request);
         if(user != null) {
+            HttpSession session = request.getSession();
             session.setAttribute("isSignin", true);
             session.setAttribute("uid", user.getUid());
             builder.addAttribute(user);
@@ -43,8 +41,8 @@ public class AuthorizationController {
     }
 
     @RequestMapping(path = "/signout", method = RequestMethod.GET)
-    public void signout(HttpServletRequest request, HttpSession session,
-                      Model model) {
+    public void signout(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
         Object isSignin = session.getAttribute("isSignin");
         if(isSignin != null && isSignin instanceof Boolean) {
             session.invalidate();
@@ -54,9 +52,7 @@ public class AuthorizationController {
     }
 
     @RequestMapping(path = "/signup", method = RequestMethod.POST)
-    public void signup(@RequestPayload User user,
-                       HttpServletRequest request,
-                       Model model) {
+    public void signup(@RequestPayload User user, HttpServletRequest request, Model model) {
         ResponseBuilder builder = new ResponseBuilder(request);
         String id = user.getId();
         String password = user.getPassword();
