@@ -24,8 +24,8 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         if(isAuth == null) {
             return true;
         }
-
         logger.info("Auth Interceptor!");
-        return super.preHandle(request, response, handler);
+
+        return false;
     }
 }
