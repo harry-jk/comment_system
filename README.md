@@ -34,23 +34,24 @@
 ----
 #### Common
 ----
-- __Response Form__  
-	```json
-	{
-		"request": "/request_path",
-		"status": status code (int)
-	}
-	```
-- __Status Code__  
-	|Code   |Description    |
-	|-------|---------------|
-	|200    |Success        |
-	|400    |Bad Request	|
-	|401    |Unauthorized	|
-	|403    |Forbidden		|
-	|404    |Not Found		|
-	|409    |Conflict		|
-	|500    |Server Error	|
+- __Response Form__
+```json
+{
+	"request": "/request_path",
+	"status": status code (int)
+}
+```
+- __Status Code__
+
+|Code   |Description    |
+|-------|---------------|
+|200    |Success        |
+|400    |Bad Request	|
+|401    |Unauthorized	|
+|403    |Forbidden		|
+|404    |Not Found		|
+|409    |Conflict		|
+|500    |Server Error	|
 
 #### Error
 ----
