@@ -1,5 +1,6 @@
 package kr.ac.jejunu.harry.controller;
 
+import kr.ac.jejunu.harry.exception.BadRequestException;
 import kr.ac.jejunu.harry.model.User;
 import kr.ac.jejunu.harry.repository.UserRepository;
 import kr.ac.jejunu.harry.response.ResponseBuilder;
@@ -53,20 +54,20 @@ public class AuthorizationController {
 
     @RequestMapping(path = "/signup", method = RequestMethod.POST)
     public void signup(@RequestPayload User user, HttpServletRequest request, Model model) {
-        ResponseBuilder builder = new ResponseBuilder(request);
         String id = user.getId();
         String password = user.getPassword();
         String name = user.getName();
         if(id == null || id.getBytes().length > 20 || id.getBytes().length < 3) {
-            builder.setStatusCode(ResponseCode.BAD_REQUEST, "ID length is must be more then 3, less then 20");
+            throw new BadRequestException("ID length is must be more then 3, less then 20");
         } else if(password == null || password.getBytes().length > 20 || password.getBytes().length < 3) {
-            builder.setStatusCode(ResponseCode.BAD_REQUEST, "Password length is must be more then 3, less then 20");
+            throw new BadRequestException("Password length is must be more then 3, less then 20");
         } else if(name == null || name.getBytes().length > 20 || name.getBytes().length < 1) {
-            builder.setStatusCode(ResponseCode.BAD_REQUEST, "Name length is must be more then 1, less then 20");
-        } else {
-            User savedUser = userRepository.save(user);
-            builder.addAttribute(savedUser);
+            throw new BadRequestException("Name length is must be more then 1, less then 20");
         }
+
+        ResponseBuilder builder = new ResponseBuilder(request);
+        User savedUser = userRepository.save(user);
+        builder.addAttribute(savedUser);
         builder.buildWithModel(model);
     }
 }

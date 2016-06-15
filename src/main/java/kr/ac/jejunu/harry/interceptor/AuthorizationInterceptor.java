@@ -26,11 +26,11 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         if(isAuth == null) {
             return true;
         }
-        logger.info("Auth Interceptor!");
+
         HttpSession session = request.getSession();
-        if(session != null && session.getAttribute("isSignin") != null) {
-            boolean isSignin = (boolean) session.getAttribute("isSignin");
-            int uid = (int) session.getAttribute("uid");
+        if(session != null && session.getAttribute("isSignin") != null && session.getAttribute("uid") != null) {
+            Boolean isSignin = (Boolean) session.getAttribute("isSignin");
+            Integer uid = (Integer) session.getAttribute("uid");
             if(!isSignin || uid < 0) throw new AuthorizationException();
             return true;
         }

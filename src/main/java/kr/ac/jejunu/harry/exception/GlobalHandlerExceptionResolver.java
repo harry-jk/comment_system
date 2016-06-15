@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMeth
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by jhkang on 2016-06-15.
@@ -31,7 +32,18 @@ public class GlobalHandlerExceptionResolver implements HandlerExceptionResolver 
         } else if(ex instanceof MissingServletRequestParameterException) {
             logger.info("MissingServletRequestParameterException: " + request.getServletPath());
             MissingServletRequestParameterException exception = (MissingServletRequestParameterException) ex;
-            builder.setStatusCode(ResponseCode.BAD_REQUEST, "Please check parameter : " + exception.getParameterName());
+            builder.setStatusCode(ResponseCode.BAD_REQUEST, "Please Check Parameter : " + exception.getParameterName());
+        } else if(ex instanceof SessionAccountNotFoundException) {
+            logger.info("SessionAccountNotFoundException: " + request.getServletPath());
+            HttpSession session = request.getSession();
+            if(session != null) {
+                session.invalidate();
+            }
+            builder.setStatusCode(ResponseCode.FORBIDDEN, "Session is Not Collect!");
+        } else if(ex instanceof BadRequestException) {
+            logger.info("BadRequestException: " + request.getServletPath());
+            BadRequestException exception = (BadRequestException) ex;
+            builder.setStatusCode(ResponseCode.BAD_REQUEST, exception.getReason());
         } else {
             logger.info("default Exception : " + request.getServletPath());
             builder.setStatusCode(ResponseCode.SERVER_ERROR, ex.getMessage());
