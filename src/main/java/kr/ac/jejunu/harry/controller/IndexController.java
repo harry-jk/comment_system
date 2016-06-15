@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
     private final static Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-    @RequestMapping(path = {"", "/", "/index"})
+    @RequestMapping(path = {"", "/", "/index"}, produces = "text/html")
     public String index() {
         logger.info("index");
         return "index";
