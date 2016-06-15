@@ -1,10 +1,13 @@
 package kr.ac.jejunu.harry.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -14,6 +17,8 @@ import java.util.Set;
 @Entity
 @Table(name = "comments")
 public class Comment {
+    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cid;
@@ -34,7 +39,9 @@ public class Comment {
     private Set<Opinion> dislike;
 
     @CreatedDate
-    private Date created_at = new Date();
+    @Column(name="created_at")
+    @JsonIgnore
+    private Date createdAt = new Date();
 
     public Integer getCid() {
         return cid;
@@ -60,12 +67,17 @@ public class Comment {
         this.comment = comment;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    @JsonGetter("created_at")
+    public String getCreateAtToString() {
+        return dateFormat.format(createdAt);
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void setDislike(Set<Opinion> dislike) {
@@ -78,11 +90,19 @@ public class Comment {
 
     @JsonGetter("like")
     public int getLikeCount() {
-        return like.size();
+        if(like == null) {
+            return 0;
+        } else {
+            return like.size();
+        }
     }
 
     @JsonGetter("dislike")
     public int getDislikeCount() {
-        return dislike.size();
+        if(dislike == null) {
+            return 0;
+        } else {
+            return dislike.size();
+        }
     }
 }

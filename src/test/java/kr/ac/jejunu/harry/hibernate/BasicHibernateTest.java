@@ -52,7 +52,7 @@ public class BasicHibernateTest {
         Comment comment = new Comment();
         comment.setUser(user);
         comment.setComment("Test");
-        comment.setCreated_at(new Date());
+        comment.setCreatedAt(new Date());
         return comment;
     }
 

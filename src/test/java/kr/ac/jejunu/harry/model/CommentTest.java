@@ -35,7 +35,7 @@ public class CommentTest extends BasicHibernateTest {
 
         assertThat(savedComment.getUser().getUid(), is(user.getUid()));
         assertThat(savedComment.getComment(), is(comment.getComment()));
-        assertThat(savedComment.getCreated_at(), is(comment.getCreated_at()));
+        assertThat(savedComment.getCreatedAt(), is(comment.getCreatedAt()));
 
         session.close();
         deleteTestObject(comment);
@@ -53,7 +53,7 @@ public class CommentTest extends BasicHibernateTest {
 
         assertThat(comment.getUser().getUid(), is(1));
         assertThat(comment.getComment(), is("i'm Harry!"));
-        assertThat(dateFormat.format(comment.getCreated_at()),
+        assertThat(dateFormat.format(comment.getCreatedAt()),
                 is(dateFormat.format(date)));
 
         session.close();
@@ -76,7 +76,7 @@ public class CommentTest extends BasicHibernateTest {
         Date editDate = new Date();
 
         savedComment.setComment(commentStr);
-        savedComment.setCreated_at(editDate);
+        savedComment.setCreatedAt(editDate);
 
         session.getTransaction().begin();
         session.save(savedComment);
@@ -86,7 +86,7 @@ public class CommentTest extends BasicHibernateTest {
 
         assertThat(editedComment.getUser().getUid(), is(comment.getUser().getUid()));
         assertThat(editedComment.getComment(), is(commentStr));
-        assertThat(dateFormat.format(editedComment.getCreated_at()),
+        assertThat(dateFormat.format(editedComment.getCreatedAt()),
                 is(dateFormat.format(editDate)));
 
         session.close();
