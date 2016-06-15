@@ -1,5 +1,7 @@
 package kr.ac.jejunu.harry.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -13,6 +15,7 @@ public class User {
     private Integer uid;
     private String id;
     private String name;
+    @JsonIgnore
     private String password;
     private String description;
     private String profile_image_url;
