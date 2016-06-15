@@ -1,6 +1,6 @@
 package kr.ac.jejunu.harry.interceptor;
 
-import kr.ac.jejunu.harry.annotation.auth.AuthRequired;
+import kr.ac.jejunu.harry.annotation.auth.AuthorizationRequired;
 import kr.ac.jejunu.harry.exception.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws AuthorizationException {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        AuthRequired isAuth = handlerMethod.getMethod().getAnnotation(AuthRequired.class);
+        AuthorizationRequired isAuth = handlerMethod.getMethod().getAnnotation(AuthorizationRequired.class);
         if(isAuth == null) {
             return true;
         }

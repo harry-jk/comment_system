@@ -1,6 +1,6 @@
 package kr.ac.jejunu.harry.controller;
 
-import kr.ac.jejunu.harry.annotation.auth.AuthRequired;
+import kr.ac.jejunu.harry.annotation.auth.AuthorizationRequired;
 import kr.ac.jejunu.harry.exception.BadRequestException;
 import kr.ac.jejunu.harry.exception.SessionAccountNotFoundException;
 import kr.ac.jejunu.harry.model.User;
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @AuthRequired
+    @AuthorizationRequired
     public void edit(@RequestPayload User user, HttpServletRequest request, Model model)
             throws MissingServletRequestParameterException {
         if(user == null) {

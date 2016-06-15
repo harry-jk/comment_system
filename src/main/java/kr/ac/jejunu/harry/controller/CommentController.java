@@ -1,6 +1,6 @@
 package kr.ac.jejunu.harry.controller;
 
-import kr.ac.jejunu.harry.annotation.auth.AuthRequired;
+import kr.ac.jejunu.harry.annotation.auth.AuthorizationRequired;
 import kr.ac.jejunu.harry.exception.BadRequestException;
 import kr.ac.jejunu.harry.exception.SessionAccountNotFoundException;
 import kr.ac.jejunu.harry.model.Comment;
@@ -61,7 +61,7 @@ public class CommentController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @AuthRequired
+    @AuthorizationRequired
     public void save(@RequestPayload String commentStr, HttpServletRequest request, Model model)
             throws MissingServletRequestParameterException {
         if(commentStr == null) {
@@ -88,13 +88,13 @@ public class CommentController {
     }
 
     @RequestMapping(path = "/{id:[0-9]+}/like", method = RequestMethod.GET)
-    @AuthRequired
+    @AuthorizationRequired
     public void like(@PathVariable Integer id, Model model) {
         model.addAttribute("like: " + id);
     }
 
     @RequestMapping(path = "/{id:[0-9]+}/dislike", method = RequestMethod.GET)
-    @AuthRequired
+    @AuthorizationRequired
     public void dislike(@PathVariable Integer id, Model model) {
         model.addAttribute("dislike: " + id);
     }
