@@ -33,4 +33,13 @@ public class BasicHibernateTest {
         sessionFactory.close();
     }
 
+    protected User getTestUser() {
+        User user = new User();
+        user.setId("test");
+        user.setPassword("1234");
+        user.setName("Harry");
+        user.setDescription("Software Engineer");
+        user.setProfile_image_url("/resources/test.jpg");
+        return user;
+    }
 }

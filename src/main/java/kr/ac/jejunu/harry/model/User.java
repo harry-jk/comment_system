@@ -14,7 +14,7 @@ public class User {
     private String id;
     private String name;
     private String password;
-    private String desc;
+    private String description;
     private String profile_image_url;
 
     public Integer getUid() {
@@ -49,12 +49,12 @@ public class User {
         this.password = password;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getProfile_image_url() {
