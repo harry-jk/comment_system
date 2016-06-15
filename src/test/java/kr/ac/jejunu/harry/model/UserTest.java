@@ -31,6 +31,7 @@ public class UserTest extends BasicHibernateTest{
         assertThat(savedUser.getProfile_image_url(), is(user.getProfile_image_url()));
 
         session.close();
+        deleteTestObject(user);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class UserTest extends BasicHibernateTest{
         assertThat(user.getPassword(), is("1234"));
         assertThat(user.getName(), is("Harry"));
         assertThat(user.getDescription(), is("Software Engineer"));
-        assertThat(user.getProfile_image_url(), is("/resources/test.jpg"));
+        assertThat(user.getProfile_image_url(), is("/resources/harry.jpg"));
 
         session.close();
     }
@@ -75,6 +76,7 @@ public class UserTest extends BasicHibernateTest{
         assertThat(editedUser.getProfile_image_url(), is(user.getProfile_image_url()));
 
         session.close();
+        deleteTestObject(user);
     }
 
     @Test

@@ -19,33 +19,13 @@ import static org.junit.Assert.assertThat;
  */
 public class CommentTest extends BasicHibernateTest {
     private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private User user;
-
-    @Override
-    public void setup() {
-        super.setup();
-        user = getTestUser();
-        Session session = sessionFactory.openSession();
-        session.getTransaction().begin();
-        session.save(user);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    @Override
-    public void finish() {
-        Session session = sessionFactory.openSession();
-        session.getTransaction().begin();
-        session.delete(user);
-        session.getTransaction().commit();
-        session.close();
-        super.finish();
-    }
 
     @Test
     public void add() {
+        User user = getTestUser();
+        Comment comment = getTestComment(user);
+
         Session session = sessionFactory.openSession();
-        Comment comment = getTestComment();
 
         session.getTransaction().begin();
         session.save(comment);
@@ -58,6 +38,8 @@ public class CommentTest extends BasicHibernateTest {
         assertThat(savedComment.getCreated_at(), is(comment.getCreated_at()));
 
         session.close();
+        deleteTestObject(comment);
+        deleteTestObject(user);
     }
 
     @Test
@@ -79,8 +61,10 @@ public class CommentTest extends BasicHibernateTest {
 
     @Test
     public void edit() {
+        User user = getTestUser();
+        Comment comment = getTestComment(user);
+
         Session session = sessionFactory.openSession();
-        Comment comment = getTestComment();
 
         session.getTransaction().begin();
         session.save(comment);
@@ -106,12 +90,16 @@ public class CommentTest extends BasicHibernateTest {
                 is(dateFormat.format(editDate)));
 
         session.close();
+        deleteTestObject(comment);
+        deleteTestObject(user);
     }
 
     @Test
     public void delete() {
+        User user = getTestUser();
+        Comment comment = getTestComment(user);
+
         Session session = sessionFactory.openSession();
-        Comment comment = getTestComment();
 
         session.getTransaction().begin();
         session.save(comment);
@@ -127,13 +115,19 @@ public class CommentTest extends BasicHibernateTest {
         assertNull(deletedComment);
 
         session.close();
+        deleteTestObject(user);
     }
 
-    private Comment getTestComment() {
-        Comment comment = new Comment();
-        comment.setUser(user);
-        comment.setComment("Test");
-        comment.setCreated_at(new Date());
-        return comment;
+    @Override
+    protected User getTestUser() {
+        User user = super.getTestUser();
+        Session session = sessionFactory.openSession();
+
+        session.getTransaction().begin();
+        session.save(user);
+        session.getTransaction().commit();
+
+        session.close();
+        return user;
     }
 }
