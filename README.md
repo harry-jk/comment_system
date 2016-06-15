@@ -13,12 +13,11 @@
 |/auth/signup   |POST		|sign up (register)	    |None			|
 
 #### User
-|Url		|Method		|Description	|Authorization	|
-|-----------|-----------|---------------|---------------|
-|/users 	|GET		|get user list	|None			|
-|/users 	|POST		|add user		|None			|
-|/users/:id	|GET		|get user by id	|None			|
-|/users/:id	|POST		|update user	|Required		|
+|Url		|Method		|Description		|Authorization	|
+|-----------|-----------|-------------------|---------------|
+|/users 	|GET		|get user list		|None			|
+|/users 	|POST		|update current user|Required		|
+|/users/:id	|GET		|get user by id		|None			|
 
 #### Comment
 |Url					|Method		|Description			|Authorization	|
@@ -66,6 +65,13 @@
 #### Authorization
 ----
 - __POST__ /auth/signin
+ - __Parameter__
+ 
+ |Key		|Value Type	|Required	|Default	|
+ |----------|-----------|-----------|-----------|
+ |id		|String		|yes		|			|
+ |password	|String		|yes		|			|
+ - __Response__
 ```json
 {
 	"request": "/auth/signin",
@@ -80,6 +86,7 @@
 }
 ```
 - __GET__ /auth/signout
+ - __Response__
 ```json
 {
 	"request": "/auth/signout",
@@ -87,16 +94,97 @@
 }
 ```
 - __POST__ /auth/signup
+ - __Parameter__
+ 
+ |Key				|Value Type		|Required	|Default	|
+ |------------------|---------------|-----------|-----------|
+ |id				|String(3-20)	|yes		|			|
+ |password			|String(3-20)	|yes		|			|
+ |name				|String(1-20)	|yes		|			|
+ |description		|String			|no			|			|
+ |profile_image_url	|String			|no			|			|
+ - __Response__
 ```json
 {
 	"request": "/auth/signup",
+	"status": 200,
 	"user": {
 		"uid": 50,
 		"id": "harry.jk",
 		"name": "Harry",
 		"description": "Software Engineer",
 		"profile_image_url": "/resources/harry.jpg"
-	},
-	"status": 200
+	}
+}
+```
+
+#### User
+----
+- __GET__ /users
+ - __Parameter__
+ 
+ |Key	|Value Type	|Required	|Default	|
+ |------|-----------|-----------|-----------|
+ |page	|Integer	|no			|1			|
+ |size	|Integer	|no			|15			|
+ - __Response__
+```json
+{
+	"request": "/users",
+	"status": 200,
+	"size": 15,
+	"totalPage": 1,
+	"page": 1,
+	"last": true,
+	"first": true,
+	"users": [
+		{
+			"uid": 1,
+			"id": "harry.jk",
+			"name": "Harry",
+			"description": "Software Engineer",
+			"profile_image_url": "/resources/harry.jpg"
+		}
+	]
+}
+```
+- __POST__ /users
+ - __Parameter__
+ 
+ |Key				|Value Type		|Required	|Default	|
+ |------------------|---------------|-----------|-----------|
+ |uid				|Integer		|yes		|			|
+ |id				|String			|yes		|			|
+ |password			|String(3-20)	|yes		|			|
+ |name				|String(1-20)	|yes		|			|
+ |description		|String			|no			|			|
+ |profile_image_url	|String			|no			|			|
+ - __Response__
+```json
+{
+	"request": "/users",
+	"status": 200,
+	"user": {
+		"uid": 1,
+		"id": "harry.jk",
+		"name": "Harry",
+		"description": "Software Engineer",
+		"profile_image_url": "/resources/harry.jpg"
+	}
+}
+```
+- __GET__ /users/{id:[0-9]+}
+ - __Response__
+```json
+{
+	"request": "/users/1",
+	"status": 200,
+	"user": {
+		"uid": 1,
+		"id": "harry.jk",
+		"name": "Harry",
+		"description": "Software Engineer",
+		"profile_image_url": "/resources/harry.jpg"
+	}
 }
 ```
