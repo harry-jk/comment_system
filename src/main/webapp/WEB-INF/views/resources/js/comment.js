@@ -21,7 +21,6 @@ var CommentController = (function() {
                     page: this.page
                 },
                 function(data) {
-                    console.log(data);
                     if(data.status != 200) {
                         return;
                     }
@@ -61,11 +60,35 @@ var CommentController = (function() {
                             }
                         }
                     }
-
-                    console.log(context.comments);
                 }
 
             );
+
+
+            // Events
+            $rootScope.$on('request::comment::like', function(event, comment, dom) {
+
+            });
+            $rootScope.$on('request::comment::dislike', function(event, comment, dom) {
+
+            });
+            $rootScope.$on('request::comment::delete', function(event, comment, dom) {
+
+            });
+
+            $rootScope.$on('request::comment::load::prev', function(event) {
+
+            });
+            $rootScope.$on('request::comment::load::next', function(event) {
+
+            });
+            $rootScope.$on('request::comment::load::page', function(event, page) {
+
+            });
+
+            $rootScope.$on('request::comment::write', function(event, comment) {
+
+            });
         }]);
 
         ctlr.factory('REQUEST_COMMENT', ['$resource', function($resource) {

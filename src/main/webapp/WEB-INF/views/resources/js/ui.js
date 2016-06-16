@@ -33,8 +33,7 @@ var UIController = (function() {
             }
 
             this.checkSession = function(uid) {
-                console.log(uid == $rootScope.user.uid);
-                return uid == $rootScope.user.uid;
+                return uid == $rootScope.user.uid && $rootScope.authorization.uid == uid && $rootScope.sign;
             }
 
             // Header
@@ -108,62 +107,73 @@ var UIController = (function() {
             }
 
             this.requestJoin = function() {
-                var user = context.user;
-                console.log(user);
-                profileModal.modal('hide');
+                $rootScope.$broadcast('request::authorization::signup', context.user);
             }
             this.requestEdit = function() {
-                var user = context.user;
-                console.log(user);
-                profileModal.modal('hide');
-
+                $rootScope.$broadcast('request::user::edit', context.user);
             }
 
             // Comment list
             this.like = function(comment, event) {
-                console.log(comment);
-                console.log(event);
+                $rootScope.$broadcast('request::comment::like', comment, event.currentTarget);
                 if(checkSignin()) {
 
                 }
             }
 
             this.dislike = function(comment, event) {
-                console.log(comment);
-                console.log(event);
+                $rootScope.$broadcast('request::comment::dislike', comment, event.currentTarget);
                 if(checkSignin()) {
 
                 }
             }
             this.requestDeleteComment = function(comment, event) {
-                console.log(comment);
-                console.log(event);
+                $rootScope.$broadcast('request::comment::delete', comment, event.currentTarget);
                 if(checkSignin()) {
 
                 }
             }
             this.requestPrevPage = function() {
-
+                $rootScope.$broadcast('request::comment::load::prev');
             }
 
             this.requestNextPage = function() {
-
+                $rootScope.$broadcast('request::comment::load::next');
             }
             this.requestPage = function(page) {
-
+                $rootScope.$broadcast('request::comment::load::page', page);
             }
 
             // Write Comment
             this.requestWriteComment = function() {
-                console.log(context.comment);
+                $rootScope.$broadcast('request::comment::write', context.comment);
             }
 
             // Events
             $rootScope.$on('authorization::signin::success', function(event, data) {
                 signinModal.modal('hide');
             });
-
             $rootScope.$on('authorization::signin::fail', function(event, data) {
+            });
+            $rootScope.$on('authorization::signup::success', function(event, data) {
+                profileModal.modal('hide');
+            });
+
+            $rootScope.$on('user::edit::success', function(event, data) {
+                profileModal.modal('hide');
+            });
+
+
+            $rootScope.$on('comment::like::success', function(event, data, dom) {
+            });
+            $rootScope.$on('comment::dislike::success', function(event, data, dom) {
+            });
+            $rootScope.$on('comment::delete::success', function(event, data, dom) {
+            });
+
+            $rootScope.$on('comment::load::success', function(event, data) {
+            });
+            $rootScope.$on('comment::write::success', function(event, data) {
             });
         }]);
     };

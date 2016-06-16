@@ -60,7 +60,7 @@
                         </div>
                         <button class="cs_delete btn btn-sm" type="button" name="button"
                             ng-class="{cs_hidden: !uiCtl.checkSession(comment.user.uid)}"
-                            ng-click="uiCtl.requestDeleteComment(comment)">삭제</button>
+                            ng-click="uiCtl.requestDeleteComment(comment, $event)">삭제</button>
                         <time class="cs_time" ng-bind="commentCtl.replaceTime(comment.created_at)"></time>
                     </div>
                 </div>

@@ -8,26 +8,23 @@ var AuthorizationController = (function() {
             $rootScope.authorization.uid = parseInt($cookies.get('uid'));
             $rootScope.sign = this.sign;
 
-            console.log($rootScope.authorization);
 
-            function signin(request) {
-                if(request.id == null || request.id.length < 3 || request.id.length > 20) {
+            function signin(user) {
+                if(user.id == null || user.id.length < 3 || user.id.length > 20) {
                     $rootScope.$broadcast('authorization::signin::fail', null);
                     return;
                 }
-                if(request.password == null || request.password.length < 3 || request.password.length > 20) {
+                if(user.password == null || user.password.length < 3 || user.password.length > 20) {
                     $rootScope.$broadcast('authorization::signin::fail', null);
                     return;
                 }
-                console.log(request);
                 REQUEST.signin(
                     {},
                     {
-                        id: request.id,
-                        password: request.password
+                        id: user.id,
+                        password: user.password
                     },
                     function(data) {
-                        console.log(data);
                         if(data.status == 200) {
                             $rootScope.authorization.uid = data.user.uid;
                             context.setSign(true);
@@ -46,16 +43,18 @@ var AuthorizationController = (function() {
             }
 
             this.isSignin = function() {
-                var uid = $cookies.get('uid');
+                var uid = parseInt($cookies.get('uid'));
                 var isSignin = uid != null && $rootScope.authorization != null && $rootScope.user != null &&
                         $rootScope.authorization.uid == uid && $rootScope.user.uid == uid && context.sign;
-                console.log(isSignin, $rootScope.sign);
                 return isSignin;
             }
 
             // Events
-            $rootScope.$on('request::authorization::signin', function(event, data) {
-                signin(data);
+            $rootScope.$on('request::authorization::signin', function(event, user) {
+                signin(user);
+            });
+            $rootScope.$on('request::authorization::signup', function(event, user) {
+
             });
         }]);
 

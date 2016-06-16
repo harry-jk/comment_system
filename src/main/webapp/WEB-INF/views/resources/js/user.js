@@ -9,10 +9,13 @@ var UserController = (function() {
 
 
             // Events
+            $rootScope.$on('request::user::edit', function(event, user) {
+
+            });
+
             $rootScope.$on('authorization::signin::success', function(event, data) {
                 $rootScope.user = data.user;
                 context.user = data.user;
-                console.log($rootScope.user);
             });
         }]);
 
