@@ -53,6 +53,7 @@
     width: 800px;
     height: 560px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #cs_contents_wrap #cs_indicator
@@ -64,7 +65,9 @@
     border-top: 1px solid #bbb;
 }
 
-#cs_contents_wrap #cs_indicator span
+#cs_contents_wrap #cs_indicator .cs_pages,
+#cs_contents_wrap #cs_indicator .cs_page_prev,
+#cs_contents_wrap #cs_indicator .cs_page_next
 {
     float: left;
     width: 100%;
