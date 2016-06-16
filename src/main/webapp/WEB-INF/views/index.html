@@ -27,14 +27,21 @@
 
     </head>
     <body ng-controller="UIController as uiCtl">
-        <div id="cs_app">
-            <div id="cs_head" ng-controller="UserController as userCtl">
-                <div id="cs_join" th:class="${user != null}? cs_hidden">
+        <div id="cs_app" th:attr="ng-init='authCtrl.setSign('+${user != null}+')'">
+            <div id="cs_head" ng-controller="UserController as userCtl"
+                 th:attr="ng-init='userCtl.user.name = \''+(${user != null} ? ${user.getName()})+'\';
+                                                userCtl.user.description = \''+(${user != null} ? ${user.getDescription()})+'\';
+                                                userCtl.user.id = \''+(${user != null} ? ${user.getId()})+'\';
+                                                userCtl.user.password= \''+(${user != null} ? ${user.getPassword()})+'\';
+                                                userCtl.user.profile_image_url = \''+(${user != null} ? ${user.getProfile_image_url()})+'\''">
+                <div id="cs_join" th:class="${user != null}? cs_hidden" ng-class="{cs_hidden: authCtrl.isSignin()}">
                     <button class="btn" type="button" name="button" ng-click="uiCtl.openJoin()">회원가입</button>
                 </div>
-                <div id="cs_profile_info" th:class="${user == null}? cs_hidden">
-                    <span class="cs_name" th:text="${user != null} ? ${user.getName()}" ng-bind="userCtl.user.name"></span>
-                    <span class="cs_desc" th:text="${user != null} ? ${user.getDescription()}" ng-bind="userCtl.user.description"></span>
+                <div id="cs_profile_info" th:class="${user == null}? cs_hidden" ng-class="{cs_hidden: !authCtrl.isSignin()}">
+                    <span class="cs_name" ng-bind="userCtl.user.name"></span>
+                    <span class="cs_desc">
+                        (<span ng-bind="userCtl.user.description"></span>)
+                    </span>
                     <button class="btn" type="button" name="button" ng-click="uiCtl.openEditProfile(userCtl.user)">프로필 수정</button>
                 </div>
                 <button id="cs_write" class="btn" type="button" name="button" ng-click="uiCtl.openWrite()">글쓰기</button>
@@ -52,6 +59,7 @@
                             <button class="btn btn-sm" type="button" name="button" ng-click="uiCtl.dislike(comment, $event)">반대({{comment.dislike}})</button>
                         </div>
                         <button class="cs_delete btn btn-sm" type="button" name="button"
+                            ng-class="{cs_hidden: !uiCtl.checkSession(comment.user.uid)}"
                             ng-click="uiCtl.requestDeleteComment(comment)">삭제</button>
                         <time class="cs_time" ng-bind="commentCtl.replaceTime(comment.created_at)"></time>
                     </div>
@@ -115,9 +123,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary"
-                                ng-show="user.modalType == 'JOIN'" ng-click="uiCtl.requestJoin()">회원가입</button>
+                                ng-show="uiCtl.modalType == 'JOIN'" ng-click="uiCtl.requestJoin()">회원가입</button>
                         <button type="button" class="btn btn-primary"
-                                ng-show="user.modalType == 'EDIT'" ng-click="uiCtl.requestEdit()">수정</button>
+                                ng-show="uiCtl.modalType == 'EDIT'" ng-click="uiCtl.requestEdit()">수정</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                     </div>
                 </div>
@@ -165,10 +173,10 @@
                         <h4 class="modal-title" id="cs_write_modal_label">댓글등록</h4>
                     </div>
                     <div class="modal-body">
-                        <textarea class="form-control" rows="3" id="cs_write_modal_comment" placeholder="Comment"></textarea>
+                        <textarea class="form-control" rows="3" id="cs_write_modal_comment" placeholder="Comment" ng-model="uiCtl.comment"></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">저장</button>
+                        <button type="button" class="btn btn-primary" ng-click="uiCtl.requestWriteComment()">저장</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
                     </div>
                 </div>

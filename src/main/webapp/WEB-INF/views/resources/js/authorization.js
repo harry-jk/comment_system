@@ -2,38 +2,61 @@ var AuthorizationController = (function() {
     var controller = function(App) {
         var ctlr = App.controller('AuthorizationController',
                 ['$scope', '$rootScope', '$cookies', 'REQUEST_AUTHORIZATION', function($scope, $rootScope, $cookies, REQUEST) {
+            var context = this;
             $rootScope.authorization = {
             }
-            $rootScope.authorization.uid = $cookies.get('uid');
+            $rootScope.authorization.uid = parseInt($cookies.get('uid'));
+            $rootScope.sign = this.sign;
+
             console.log($rootScope.authorization);
 
-            this.signinForm = {
-                id: "",
-                password: ""
-            }
-            this.signin = function() {
-                if(id == null || id.length < 3 || id.length > 20) {
+            function signin(request) {
+                if(request.id == null || request.id.length < 3 || request.id.length > 20) {
+                    $rootScope.$broadcast('authorization::signin::fail', null);
                     return;
                 }
-                if(password == null || password.length < 3 || password.length > 20) {
+                if(request.password == null || request.password.length < 3 || request.password.length > 20) {
+                    $rootScope.$broadcast('authorization::signin::fail', null);
                     return;
                 }
+                console.log(request);
                 REQUEST.signin(
                     {},
                     {
-                        id: $scope.signinForm.id,
-                        password: $scope.signinForm.password
+                        id: request.id,
+                        password: request.password
                     },
                     function(data) {
                         console.log(data);
                         if(data.status == 200) {
-
+                            $rootScope.authorization.uid = data.user.uid;
+                            context.setSign(true);
+                            $cookies.put('uid', data.user.uid);
+                            $rootScope.$broadcast('authorization::signin::success', data);
                         } else {
-
+                            $rootScope.$broadcast('authorization::signin::fail', data);
                         }
                     }
                 );
             }
+
+            this.setSign = function(sign) {
+                context.sign = sign;
+                $rootScope.sign = sign;
+            }
+
+            this.isSignin = function() {
+                var uid = $cookies.get('uid');
+                var isSignin = uid != null && $rootScope.authorization != null && $rootScope.user != null &&
+                        $rootScope.authorization.uid == uid && $rootScope.user.uid == uid && context.sign;
+                console.log(isSignin, $rootScope.sign);
+                return isSignin;
+            }
+
+            // Events
+            $rootScope.$on('request::authorization::signin', function(event, data) {
+                signin(data);
+            });
         }]);
 
         ctlr.factory('REQUEST_AUTHORIZATION', ['$resource', function($resource) {

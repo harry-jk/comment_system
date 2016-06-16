@@ -24,11 +24,17 @@ var UIController = (function() {
                 if($rootScope.authorization == null ||
                     $rootScope.user == null ||
                     $rootScope.user.uid == null ||
-                    $rootScope.authorization.uid != $rootScope.user.uid) {
+                    $rootScope.authorization.uid != $rootScope.user.uid ||
+                    !$rootScope.sign) {
                     signinModal.modal('show');
                     return false;
                 }
                 return true;
+            }
+
+            this.checkSession = function(uid) {
+                console.log(uid == $rootScope.user.uid);
+                return uid == $rootScope.user.uid;
             }
 
             // Header
@@ -73,7 +79,7 @@ var UIController = (function() {
             this.requestSignin = function() {
                 var signin = context.signin;
                 console.log(signin);
-                signinModal.modal('hide');
+                $rootScope.$broadcast('request::authorization::signin', signin);
             }
 
             //Modal - profile
@@ -104,10 +110,12 @@ var UIController = (function() {
 
             this.requestJoin = function() {
                 var user = context.user;
+                console.log(user);
                 profileModal.modal('hide');
             }
             this.requestEdit = function() {
                 var user = context.user;
+                console.log(user);
                 profileModal.modal('hide');
 
             }
@@ -128,12 +136,26 @@ var UIController = (function() {
 
                 }
             }
-            this.requestDeleteComment = function(comment) {
+            this.requestDeleteComment = function(comment, event) {
                 console.log(comment);
+                console.log(event);
                 if(checkSignin()) {
 
                 }
             }
+
+            // Write Comment
+            this.requestWriteComment = function() {
+                console.log(context.comment);
+            }
+
+            // Events
+            $rootScope.$on('authorization::signin::success', function(event, data) {
+                signinModal.modal('hide');
+            });
+
+            $rootScope.$on('authorization::signin::fail', function(event, data) {
+            });
         }]);
     };
 
