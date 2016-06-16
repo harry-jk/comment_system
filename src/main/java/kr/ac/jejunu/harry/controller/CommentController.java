@@ -4,8 +4,10 @@ import kr.ac.jejunu.harry.annotation.auth.AuthorizationRequired;
 import kr.ac.jejunu.harry.exception.BadRequestException;
 import kr.ac.jejunu.harry.exception.SessionAccountNotFoundException;
 import kr.ac.jejunu.harry.model.Comment;
+import kr.ac.jejunu.harry.model.Opinion;
 import kr.ac.jejunu.harry.model.User;
 import kr.ac.jejunu.harry.repository.CommentRepository;
+import kr.ac.jejunu.harry.repository.OpinionRepository;
 import kr.ac.jejunu.harry.repository.UserRepository;
 import kr.ac.jejunu.harry.response.ResponseBuilder;
 import kr.ac.jejunu.harry.response.ResponseCode;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by jhkang on 2016-06-12.
@@ -31,6 +34,8 @@ public class CommentController {
     CommentRepository commentRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    OpinionRepository opinionRepository;
 
     @RequestMapping(path = "/{id:[0-9]+}", method = RequestMethod.GET)
     public void get(@PathVariable Integer id, HttpServletRequest request, Model model) {
@@ -65,15 +70,11 @@ public class CommentController {
     public void save(@RequestPayload String commentStr, HttpServletRequest request, Model model)
             throws MissingServletRequestParameterException {
         if(commentStr == null) {
-            throw new MissingServletRequestParameterException("comment", String.class.getTypeName());
+            throw new MissingServletRequestParameterException("commentStr", String.class.getTypeName());
         }
-        Integer uid = (Integer) request.getSession().getAttribute("uid");
-        User user = userRepository.findOne(uid);
-        if(user == null || user.getUid() < 0) {
-            throw new SessionAccountNotFoundException();
-        }
+        User user = getCurrentSessionUser(request);
 
-        if(commentStr == null || commentStr.getBytes().length > 255 || commentStr.getBytes().length < 1) {
+        if(commentStr.getBytes().length > 255 || commentStr.getBytes().length < 1) {
             throw new BadRequestException("Comment length is must be more then 1, less then 255");
         }
         Comment comment = new Comment();
@@ -89,13 +90,56 @@ public class CommentController {
 
     @RequestMapping(path = "/{id:[0-9]+}/like", method = RequestMethod.GET)
     @AuthorizationRequired
-    public void like(@PathVariable Integer id, Model model) {
-        model.addAttribute("like: " + id);
+    public void like(@PathVariable Integer id, HttpServletRequest request, Model model) {
+        Comment comment = commentRepository.findOne(id);
+        User user = getCurrentSessionUser(request);
+        ResponseBuilder builder = new ResponseBuilder(request);
+        if(comment == null || comment.getCid() < 0) {
+            builder.setStatusCode(ResponseCode.CONFLICT, "Comment Not Found");
+            builder.buildWithModel(model);
+            return;
+        }
+        Opinion opinion = new Opinion();
+        opinion.setUser(user);
+        opinion.setComment(comment);
+        opinion.setType(Opinion.TYPE.LIKE);
+
+        Opinion savedOpinion = opinionRepository.save(opinion);
+        builder.addAttribute(savedOpinion);
+        builder.buildWithModel(model);
     }
 
     @RequestMapping(path = "/{id:[0-9]+}/dislike", method = RequestMethod.GET)
     @AuthorizationRequired
-    public void dislike(@PathVariable Integer id, Model model) {
-        model.addAttribute("dislike: " + id);
+    public void dislike(@PathVariable Integer id, HttpServletRequest request, Model model) {
+        Comment comment = commentRepository.findOne(id);
+        User user = getCurrentSessionUser(request);
+        ResponseBuilder builder = new ResponseBuilder(request);
+        if(comment == null || comment.getCid() < 0) {
+            builder.setStatusCode(ResponseCode.CONFLICT, "Comment Not Found");
+            builder.buildWithModel(model);
+            return;
+        }
+        Opinion opinion = new Opinion();
+        opinion.setUser(user);
+        opinion.setComment(comment);
+        opinion.setType(Opinion.TYPE.DISLIKE);
+
+        Opinion savedOpinion = opinionRepository.save(opinion);
+        builder.addAttribute(savedOpinion);
+        builder.buildWithModel(model);
+    }
+
+    private User getCurrentSessionUser(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if(session == null || session.getAttribute("uid") == null) {
+            throw new SessionAccountNotFoundException();
+        }
+        Integer uid = (Integer) session.getAttribute("uid");
+        User user = userRepository.findOne(uid);
+        if(user == null || user.getUid() < 0) {
+            throw new SessionAccountNotFoundException();
+        }
+        return user;
     }
 }
