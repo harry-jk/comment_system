@@ -275,3 +275,67 @@
 	}
 }
 ```
+- __GET__ /comments/{id:[0-9]+}/like
+ - __Response__
+```json
+{
+	"request": "/comments/1/like",
+	"status": 200,
+	"opinion": {
+		"type": "LIKE",
+		"comment": {
+			"cid": 1,
+			"user": {
+				"uid": 1,
+				"id": "harry.jk",
+				"name": "Harry",
+				"description": "Software Engineer",
+				"profile_image_url": "/resources/harry.jpg"
+			},
+			"comment": "i'm Harry!",
+			"like": 3,
+			"dislike": 2,
+			"created_at": "2016-06-15 15:42:29"
+		},
+		"user": {
+			"uid": 1,
+			"id": "harry.jk",
+			"name": "Harry",
+			"description": "Software Engineer",
+			"profile_image_url": "/resources/harry.jpg"
+		}
+	}
+}
+```
+- __GET__ /comments/{id:[0-9]+}/dislike
+ - __Response__
+```json
+{
+	"request": "/comments/1/dislike",
+	"status": 200,
+	"opinion": {
+		"type": "DISLIKE",
+		"comment": {
+			"cid": 1,
+			"user": {
+				"uid": 1,
+				"id": "harry.jk",
+				"name": "Harry",
+				"description": "Software Engineer",
+				"profile_image_url": "/resources/harry.jpg"
+			},
+			"comment": "i'm Harry!",
+			"like": 3,
+			"dislike": 3,
+			"created_at": "2016-06-15 15:42:29"
+		},
+		"user": {
+			"uid": 1,
+			"id": "harry.jk",
+			"name": "Harry",
+			"description": "Software Engineer",
+			"profile_image_url": "/resources/harry.jpg"
+		}
+	}
+}
+```
