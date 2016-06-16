@@ -78,7 +78,6 @@ var UIController = (function() {
 
             this.requestSignin = function() {
                 var signin = context.signin;
-                console.log(signin);
                 $rootScope.$broadcast('request::authorization::signin', signin);
             }
 
@@ -142,6 +141,16 @@ var UIController = (function() {
                 if(checkSignin()) {
 
                 }
+            }
+            this.requestPrevPage = function() {
+
+            }
+
+            this.requestNextPage = function() {
+
+            }
+            this.requestPage = function(page) {
+
             }
 
             // Write Comment

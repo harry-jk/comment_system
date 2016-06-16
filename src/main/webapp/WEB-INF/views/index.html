@@ -65,11 +65,11 @@
                     </div>
                 </div>
                 <div id="cs_indicator">
-                    <a class="cs_page_prev" href="#prev" ng-show="!commentCtl.first"> &lt; </a>
+                    <a class="cs_page_prev" href="#prev" ng-show="!commentCtl.first" ng-click="uiCtl.requestPrevPage()"> &lt; </a>
                     <div class="cs_pages">
-                        <a ng-href="#page{{page}}" ng-repeat="page in commentCtl.pages">{{page}}</a>
+                        <a ng-href="#page{{page}}" ng-repeat="page in commentCtl.pages" ng-click="uiCtl.requestPage(page)">{{page}}</a>
                     </div>
-                    <a class="cs_page_next" href="#next" ng-show="!commentCtl.last"> &gt; </a>
+                    <a class="cs_page_next" href="#next" ng-show="!commentCtl.last" ng-click="uiCtl.requestNextPage()"> &gt; </a>
                 </div>
             </div>
         </div>
