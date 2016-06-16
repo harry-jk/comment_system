@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" ng-app="App" ng-controller="AuthorizationController as auth">
+<html xmlns:th="http://www.thymeleaf.org" ng-app="App" ng-controller="AuthorizationController as authCtrl">
     <head>
         <meta charset="utf-8" />
         <title>Comment System</title>
@@ -26,41 +26,42 @@
         <script src="/resources/js/app.js"></script>
 
     </head>
-    <body ng-controller="UIController as ui">
+    <body ng-controller="UIController as uiCtl">
         <div id="cs_app">
-            <div id="cs_head" ng-controller="UserController as user">
+            <div id="cs_head" ng-controller="UserController as userCtl">
                 <div id="cs_join" th:class="${user != null}? cs_hidden">
-                    <button class="btn" type="button" name="button" ng-click="ui.openJoin()">회원가입</button>
+                    <button class="btn" type="button" name="button" ng-click="uiCtl.openJoin()">회원가입</button>
                 </div>
                 <div id="cs_profile_info" th:class="${user == null}? cs_hidden">
-                    <span class="cs_name" th:text="${user != null} ? ${user.getName()}" ng-model="user.name"></span>
-                    <span class="cs_desc" th:text="${user != null} ? ${user.getDescription()}" ng-model="user.description"></span>
-                    <button class="btn" type="button" name="button" ng-click="ui.openEditProfile(user)">프로필 수정</button>
+                    <span class="cs_name" th:text="${user != null} ? ${user.getName()}" ng-bind="userCtl.user.name"></span>
+                    <span class="cs_desc" th:text="${user != null} ? ${user.getDescription()}" ng-bind="userCtl.user.description"></span>
+                    <button class="btn" type="button" name="button" ng-click="uiCtl.openEditProfile(userCtl.user)">프로필 수정</button>
                 </div>
-                <button id="cs_write" class="btn" type="button" name="button" ng-click="ui.openWrite()">글쓰기</button>
+                <button id="cs_write" class="btn" type="button" name="button" ng-click="uiCtl.openWrite()">글쓰기</button>
             </div>
-            <div id="cs_contents_wrap" ng-controller="CommentController as comment">
+            <div id="cs_contents_wrap" ng-controller="CommentController as commentCtl">
                 <div id="cs_contents" >
-                    <div class="cs_content" ng-repeat="comment in comment.comments">
+                    <div class="cs_content" ng-repeat="comment in commentCtl.comments">
                         <div class="cs_profile">
                             <img class="cs_image" src="" alt="" />
-                            <span class="cs_name">Harry</span>
+                            <span class="cs_name" ng-bind="comment.user.name"></span>
                         </div>
-                        <span class="cs_comment">Go to Work!</span>
+                        <span class="cs_comment" ng-bind="comment.comment"></span>
                         <div class="cs_opinion">
-                            <button class="btn btn-sm" type="button" name="button">추천(10)</button>
-                            <button class="btn btn-sm" type="button" name="button">반대(100)</button>
+                            <button class="btn btn-sm" type="button" name="button" ng-click="uiCtl.like(comment, $event)">추천({{comment.like}})</button>
+                            <button class="btn btn-sm" type="button" name="button" ng-click="uiCtl.dislike(comment, $event)">반대({{comment.dislike}})</button>
                         </div>
-                        <button class="cs_delete btn btn-sm" type="button" name="button">삭제</button>
-                        <time class="cs_time">5분전</time>
+                        <button class="cs_delete btn btn-sm" type="button" name="button"
+                            ng-click="uiCtl.requestDeleteComment(comment)">삭제</button>
+                        <time class="cs_time" ng-bind="commentCtl.replaceTime(comment.created_at)"></time>
                     </div>
                 </div>
                 <div id="cs_indicator">
-                    <a class="cs_page_prev" href="#prev" ng-show="!comment.first"> &lt; </a>
+                    <a class="cs_page_prev" href="#prev" ng-show="!commentCtl.first"> &lt; </a>
                     <div class="cs_pages">
-                        <a ng-href="#page{{page}}" ng-repeat="page in comment.pages">{{page}}</a>
+                        <a ng-href="#page{{page}}" ng-repeat="page in commentCtl.pages">{{page}}</a>
                     </div>
-                    <a class="cs_page_next" href="#next" ng-show="!comment.last"> &gt; </a>
+                    <a class="cs_page_next" href="#next" ng-show="!commentCtl.last"> &gt; </a>
                 </div>
             </div>
         </div>
@@ -71,52 +72,52 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="cs_profile_modal_label" ng-show="ui.modalType == 'JOIN'">회원가입</h4>
-                        <h4 class="modal-title" id="cs_profile_modal_label" ng-show="ui.modalType == 'EDIT'">프로필 수정</h4>
+                        <h4 class="modal-title" id="cs_profile_modal_label" ng-show="uiCtl.modalType == 'JOIN'">회원가입</h4>
+                        <h4 class="modal-title" id="cs_profile_modal_label" ng-show="uiCtl.modalType == 'EDIT'">프로필 수정</h4>
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
-                            <div class="form-group" ng-class="ui.checkProfileID()">
+                            <div class="form-group" ng-class="uiCtl.checkProfileID()">
                                 <label for="cs_profile_modal_id" class="col-sm-3 control-label">ID</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control"
-                                            id="cs_profile_modal_id" placeholder="ID" ng-model="ui.user.id" />
+                                            id="cs_profile_modal_id" placeholder="ID" ng-model="uiCtl.user.id" />
                                 </div>
                             </div>
-                            <div class="form-group" ng-class="ui.checkProfilePassword()">
+                            <div class="form-group" ng-class="uiCtl.checkProfilePassword()">
                                 <label for="cs_profile_modal_password" class="col-sm-3 control-label">Password</label>
                                 <div class="col-sm-9">
                                     <input type="password" class="form-control"
-                                        id="cs_profile_modal_password" placeholder="Password" ng-model="ui.user.password" />
+                                        id="cs_profile_modal_password" placeholder="Password" ng-model="uiCtl.user.password" />
                                 </div>
                             </div>
-                            <div class="form-group" ng-class="ui.checkProfileName()">
+                            <div class="form-group" ng-class="uiCtl.checkProfileName()">
                                 <label for="cs_profile_modal_name" class="col-sm-3 control-label">Name</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control"
-                                        id="cs_profile_modal_name" placeholder="Name" ng-model="ui.user.name" />
+                                        id="cs_profile_modal_name" placeholder="Name" ng-model="uiCtl.user.name" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="cs_profile_modal_desc" class="col-sm-3 control-label">Description</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control"
-                                        id="cs_profile_modal_desc" placeholder="Description" ng-model="ui.user.description" />
+                                        id="cs_profile_modal_desc" placeholder="Description" ng-model="uiCtl.user.description" />
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="cs_profile_modal_photo" class="col-sm-3 control-label">Photo</label>
                                 <div class="col-sm-9">
-                                    <input type="file" class="form-control" id="cs_profile_modal_photo" ng-model="ui.user.profile_image_file" />
+                                    <input type="file" class="form-control" id="cs_profile_modal_photo" ng-model="uiCtl.user.profile_image_file" />
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary"
-                                ng-show="user.modalType == 'JOIN'" ng-click="ui.requestJoin()">회원가입</button>
+                                ng-show="user.modalType == 'JOIN'" ng-click="uiCtl.requestJoin()">회원가입</button>
                         <button type="button" class="btn btn-primary"
-                                ng-show="user.modalType == 'EDIT'" ng-click="ui.requestEdit()">수정</button>
+                                ng-show="user.modalType == 'EDIT'" ng-click="uiCtl.requestEdit()">수정</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                     </div>
                 </div>
@@ -132,24 +133,24 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal">
-                            <div class="form-group" ng-class="ui.checkSigninID()">
+                            <div class="form-group" ng-class="uiCtl.checkSigninID()">
                                 <label for="cs_signin_modal_id" class="col-sm-3 control-label">ID</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="cs_signin_modal_id"
-                                        placeholder="ID" ng-model="ui.signin.id" />
+                                        placeholder="ID" ng-model="uiCtl.signin.id" />
                                 </div>
                             </div>
-                            <div class="form-group" ng-class="ui.checkSigninPassword()">
+                            <div class="form-group" ng-class="uiCtl.checkSigninPassword()">
                                 <label for="cs_signin_modal_password" class="col-sm-3 control-label">Password</label>
                                 <div class="col-sm-9">
                                     <input type="password" class="form-control" id="cs_signin_modal_password"
-                                        placeholder="Password" ng-model="ui.signin.password" />
+                                        placeholder="Password" ng-model="uiCtl.signin.password" />
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" ng-click="ui.requestSignin()">로그인</button>
+                        <button type="button" class="btn btn-primary" ng-click="uiCtl.requestSignin()">로그인</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                 </div>
                 </div>

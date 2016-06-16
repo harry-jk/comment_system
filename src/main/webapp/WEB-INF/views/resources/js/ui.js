@@ -113,14 +113,22 @@ var UIController = (function() {
             }
 
             // Comment list
-            this.like = function(comment) {
+            this.like = function(comment, event) {
                 console.log(comment);
+                console.log(event);
                 if(checkSignin()) {
 
                 }
             }
 
-            this.dislike = function(comment) {
+            this.dislike = function(comment, event) {
+                console.log(comment);
+                console.log(event);
+                if(checkSignin()) {
+
+                }
+            }
+            this.requestDeleteComment = function(comment) {
                 console.log(comment);
                 if(checkSignin()) {
 

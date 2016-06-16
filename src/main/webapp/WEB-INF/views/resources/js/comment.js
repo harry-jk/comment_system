@@ -12,6 +12,10 @@ var CommentController = (function() {
             this.last = true;
             this.first = true;
 
+            this.replaceTime = function(time) {
+                console.log(time);
+                return "~1분전";
+            }
             REQUEST.list(
                 {
                     page: this.page
@@ -60,6 +64,7 @@ var CommentController = (function() {
 
                     console.log(context.comments);
                 }
+
             );
         }]);
 
