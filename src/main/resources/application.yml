@@ -4,7 +4,7 @@ spring:
     prefix: /WEB-INF/views/
     suffix: .html
   datasource:
-    url: jdbc:mysql://db.skyserv.kr/jnu_comment_system?characterEncoding=utf-8
+    url: jdbc:mysql://localhost/jnu_comment_system?characterEncoding=utf-8
     username: jeju
     password: jejupw
     driver-class-name: com.mysql.jdbc.Driver
