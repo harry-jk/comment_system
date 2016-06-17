@@ -39,6 +39,7 @@ var UIController = (function() {
             // Header
             this.openJoin = function() {
                 context.modalType = "JOIN";
+                context.user = {};
                 profileModal.modal('show');
             }
             this.openEditProfile = function(user) {
@@ -49,6 +50,8 @@ var UIController = (function() {
                 context.user.name = user.name;
                 context.user.description = user.description;
                 context.user.profile_image_url = user.profile_image_url;
+                context.user.profile_image_file = null;
+                $("#cs_profile_modal_photo").val("");
                 profileModal.modal('show');
             }
             this.openWrite = function() {
@@ -186,6 +189,7 @@ var UIController = (function() {
             });
             $rootScope.$on('comment::write::success', function(event, data) {
                 writeModal.modal('hide');
+                context.comment = "";
             });
         }]);
     };

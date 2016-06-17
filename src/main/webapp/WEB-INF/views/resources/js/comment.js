@@ -127,12 +127,7 @@ var CommentController = (function() {
                             $rootScope.$broadcast('comment::delete::fail', data, dom);
                             return;
                         }
-                        for(var index = 0; index < context.comments.length; ++index) {
-                            if(context.comments[index].cid == comment.cid) {
-                                context.comments.splice(index, 1);
-                                break;
-                            }
-                        }
+                        requestPage(context.page);
                         $rootScope.$broadcast('comment::delete::success', data, dom);
                     }
                 );
