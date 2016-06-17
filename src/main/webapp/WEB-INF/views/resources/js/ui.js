@@ -169,7 +169,7 @@ var UIController = (function() {
             $rootScope.$on('comment::dislike::success', function(event, data, dom) {
             });
             $rootScope.$on('comment::delete::success', function(event, data, dom) {
-                $(dom).parents('.cs_content').remove();
+                $(dom).parent('.cs_content').remove();
             });
 
             $rootScope.$on('comment::load::success', function(event, data) {
