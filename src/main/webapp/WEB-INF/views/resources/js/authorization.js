@@ -29,6 +29,7 @@ var AuthorizationController = (function() {
                             $rootScope.authorization.uid = data.user.uid;
                             context.setSign(true);
                             $cookies.put('uid', data.user.uid);
+                            data.user.password = user.password;
                             $rootScope.$broadcast('authorization::signin::success', data);
                         } else {
                             $rootScope.$broadcast('authorization::signin::fail', data);
