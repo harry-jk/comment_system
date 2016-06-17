@@ -133,7 +133,20 @@ var CommentController = (function() {
             });
 
             $rootScope.$on('request::comment::write', function(event, comment) {
-
+                REQUEST.post(
+                    {},
+                    {
+                        commentStr: comment
+                    },
+                    function(data) {
+                        if(data.status != 200) {
+                            $rootScope.$broadcast('comment::write::fail', data);
+                            return;
+                        }
+                        context.comments.unshift(data.comment);
+                        $rootScope.$broadcast('comment::write::success', data);
+                    }
+                );
             });
         }]);
 
