@@ -160,7 +160,11 @@ var CommentController = (function() {
                             $rootScope.$broadcast('comment::write::fail', data);
                             return;
                         }
-                        context.comments.unshift(data.comment);
+                        if(context.page == 1) {
+                            context.comments.unshift(data.comment);
+                        } else {
+                            requestPage(1);
+                        }
                         $rootScope.$broadcast('comment::write::success', data);
                     }
                 );
