@@ -50,12 +50,54 @@ var AuthorizationController = (function() {
                 return isSignin;
             }
 
+            function requestSignup(user, image) {
+                if(image != null) user.profile_image_url = image;
+                REQUEST.signup(
+                    {},
+                    {
+                        uid: user.uid,
+                        id: user.id,
+                        password: user.password,
+                        name: user.name,
+                        description: user.description,
+                        profile_image_url: user.profile_image_url
+                    },
+                    function(data) {
+                        if(data.status != 200) {
+                            $rootScope.$broadcast('authorization::signup::fail', data);
+                            return;
+                        }
+                        data.user.password = user.password;
+                        $rootScope.user = data.user;
+                        context.user = data.user;
+                        $rootScope.$broadcast('authorization::signup::success', data);
+                    }
+                );
+            }
+
             // Events
             $rootScope.$on('request::authorization::signin', function(event, user) {
                 signin(user);
             });
             $rootScope.$on('request::authorization::signup', function(event, user) {
-
+                if(user.profile_image_file == null) {
+                    requestSignup(user, null);
+                } else {
+                    REQUEST.image(
+                        {},
+                        {
+                            file: user.profile_image_file
+                        },
+                        function(data) {
+                            console.log(data);
+                            if(data.status != 200) {
+                                $rootScope.$broadcast('authorization::signup::fail', data);
+                                return;
+                            }
+                            requestSignup(user, data.image);
+                        }
+                    );
+                }
             });
         }]);
 
@@ -75,6 +117,10 @@ var AuthorizationController = (function() {
                     signup: {
                         method: 'POST',
                         url: '/auth/signup'
+                    },
+                    image: {
+                        method: 'POST',
+                        url: '/files/profile'
                     }
                 }
             );

@@ -8,8 +8,8 @@ var UserController = (function() {
             $rootScope.user.uid = parseInt($cookies.get('uid'));
 
 
-            // Events
-            $rootScope.$on('request::user::edit', function(event, user) {
+            function requestEdit(user, image) {
+                if(image != null) user.profile_image_url = image;
                 REQUEST.edit(
                     {},
                     {
@@ -31,6 +31,28 @@ var UserController = (function() {
                         $rootScope.$broadcast('user::edit::success', data);
                     }
                 );
+            }
+
+            // Events
+            $rootScope.$on('request::user::edit', function(event, user) {
+                if(user.profile_image_file == null) {
+                    requestEdit(user, null);
+                } else {
+                    REQUEST.image(
+                        {},
+                        {
+                            file: user.profile_image_file
+                        },
+                        function(data) {
+                            console.log(data);
+                            if(data.status != 200) {
+                                $rootScope.$broadcast('user::edit::fail', data);
+                                return;
+                            }
+                            requestEdit(user, data.image);
+                        }
+                    );
+                }
             });
 
             $rootScope.$on('authorization::signin::success', function(event, data) {
@@ -47,6 +69,10 @@ var UserController = (function() {
                     edit: {
                         method: 'POST',
                         url: '/users'
+                    },
+                    image: {
+                        method: 'POST',
+                        url: '/files/profile'
                     }
                 }
             );
