@@ -12,9 +12,20 @@ var CommentController = (function() {
             this.last = true;
             this.first = true;
 
-            this.replaceTime = function(time) {
-                console.log(time);
-                return "~1분전";
+            this.replaceTime = function(timeStr) {
+                var current = new Date();
+                var time = new Date(timeStr)
+                var diff = Math.floor((current - time) / 1000); // second
+                if(diff < 60) {
+                    return Math.floor(diff) + "초 전";
+                } else if(diff < (60 * 60)) {
+                    return Math.floor(diff/60) + "분 전";
+                } else if(diff < (60 * 60 * 24)) {
+                    return Math.floor(diff/60/24) + "시간 전";
+                } else {
+                    return current.getFullYear() + "." + (current.getMonth() + 1) + "." + current.getDate();
+                }
+
             };
 
 
