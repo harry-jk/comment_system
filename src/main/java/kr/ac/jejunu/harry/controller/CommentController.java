@@ -23,6 +23,7 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by jhkang on 2016-06-12.
@@ -85,6 +86,32 @@ public class CommentController {
 
         ResponseBuilder builder = new ResponseBuilder(request);
         builder.addAttribute(savedComment);
+        builder.buildWithModel(model);
+    }
+
+    @RequestMapping(path = "/{id:[0-9]+}", method = RequestMethod.DELETE)
+    @AuthorizationRequired
+    public void delete(@PathVariable Integer id, HttpServletRequest request, Model model) {
+        Comment comment = commentRepository.findOne(id);
+        User user = getCurrentSessionUser(request);
+        ResponseBuilder builder = new ResponseBuilder(request);
+        if(comment == null || comment.getCid() < 0) {
+            builder.setStatusCode(ResponseCode.CONFLICT, "Comment Not Found");
+            builder.buildWithModel(model);
+            return;
+        }
+
+        if(user.getUid() != comment.getUser().getUid()) {
+            builder.setStatusCode(ResponseCode.CONFLICT, "Not Matched Comment Author");
+            builder.buildWithModel(model);
+            return;
+        }
+
+        List<Opinion> opinions = opinionRepository.findAllByComment(comment);
+        opinionRepository.delete(opinions);
+
+        commentRepository.delete(comment.getCid());
+        builder.addAttribute("cid", comment.getCid());
         builder.buildWithModel(model);
     }
 

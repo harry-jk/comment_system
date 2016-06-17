@@ -25,6 +25,7 @@
 |/comments 				|GET		|get comment list		|None			|
 |/comments 				|POST		|add comment			|Required		|
 |/comments/:id			|GET		|get comment by id		|None			|
+|/comments/:id			|DELETE		|delete comment by id	|Required		|
 |/comments/:id/like		|POST		|like comment by id		|Required		|
 |/comments/:id/dislike	|POST		|dislike comment by id	|Required		|
 
@@ -273,6 +274,15 @@
 		"dislike": 0,
 		"created_at": "2016-06-15 15:42:29"
 	}
+}
+```
+- __DELETE__ /comments/{id:[0-9]+}
+ - __Response__
+```json
+{
+	"request": "/comments/1",
+	"status": 200,
+	"cid": 1
 }
 ```
 - __GET__ /comments/{id:[0-9]+}/like
