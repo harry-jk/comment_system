@@ -30,6 +30,7 @@
         <div id="cs_app" th:attr="ng-init='authCtrl.setSign('+${user != null}+')'">
             <div id="cs_head" ng-controller="UserController as userCtl"
                  th:attr="ng-init='userCtl.user.name = \''+(${user != null} ? ${user.getName()})+'\';
+                                                userCtl.user.uid = \''+(${user != null} ? ${user.getUid()})+'\';
                                                 userCtl.user.description = \''+(${user != null} ? ${user.getDescription()})+'\';
                                                 userCtl.user.id = \''+(${user != null} ? ${user.getId()})+'\';
                                                 userCtl.user.password= \''+(${user != null} ? ${user.getPassword()})+'\';

@@ -43,6 +43,7 @@ var UIController = (function() {
             }
             this.openEditProfile = function(user) {
                 context.modalType = "EDIT";
+                context.user.uid = user.uid;
                 context.user.id = user.id;
                 context.user.password = user.password;
                 context.user.name = user.name;

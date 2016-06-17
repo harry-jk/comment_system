@@ -10,7 +10,27 @@ var UserController = (function() {
 
             // Events
             $rootScope.$on('request::user::edit', function(event, user) {
-
+                REQUEST.edit(
+                    {},
+                    {
+                        uid: user.uid,
+                        id: user.id,
+                        password: user.password,
+                        name: user.name,
+                        description: user.description,
+                        profile_image_url: user.profile_image_url
+                    },
+                    function(data) {
+                        if(data.status != 200) {
+                            $rootScope.$broadcast('user::edit::fail', data);
+                            return;
+                        }
+                        data.user.password = user.password;
+                        $rootScope.user = data.user;
+                        context.user = data.user;
+                        $rootScope.$broadcast('user::edit::success', data);
+                    }
+                );
             });
 
             $rootScope.$on('authorization::signin::success', function(event, data) {

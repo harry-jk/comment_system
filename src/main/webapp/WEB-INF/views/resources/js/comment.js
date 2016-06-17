@@ -159,6 +159,12 @@ var CommentController = (function() {
                     }
                 );
             });
+
+
+
+            $rootScope.$on('user::edit::success', function(event, data) {
+                requestPage(context.page);
+            });
         }]);
 
         ctlr.factory('REQUEST_COMMENT', ['$resource', function($resource) {
