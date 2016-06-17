@@ -25,6 +25,7 @@ var CommentController = (function() {
                     },
                     function(data) {
                         if(data.status != 200) {
+                            $rootScope.$broadcast('comment::load::fail', data);
                             return;
                         }
                         context.page = data.page;
@@ -64,6 +65,8 @@ var CommentController = (function() {
                                 }
                             }
                         }
+
+                        $rootScope.$broadcast('comment::load::success', data);
                     }
                 );
             };
@@ -72,13 +75,50 @@ var CommentController = (function() {
 
             // Events
             $rootScope.$on('request::comment::like', function(event, comment, dom) {
-
+                REQUEST.like(
+                    {
+                        id: comment.cid
+                    },
+                    function(data) {
+                        if(data.status != 200) {
+                            $rootScope.$broadcast('comment::like::fail', data, dom);
+                            return;
+                        }
+                        comment.like = data.opinion.comment.like;
+                        comment.dislike = data.opinion.comment.dislike;
+                        $rootScope.$broadcast('comment::like::success', data, dom);
+                    }
+                );
             });
             $rootScope.$on('request::comment::dislike', function(event, comment, dom) {
-
+                REQUEST.dislike(
+                    {
+                        id: comment.cid
+                    },
+                    function(data) {
+                        if(data.status != 200) {
+                            $rootScope.$broadcast('comment::dislike::fail', data, dom);
+                            return;
+                        }
+                        comment.like = data.opinion.comment.like;
+                        comment.dislike = data.opinion.comment.dislike;
+                        $rootScope.$broadcast('comment::dislike::success', data, dom);
+                    }
+                );
             });
             $rootScope.$on('request::comment::delete', function(event, comment, dom) {
-
+                REQUEST.delete(
+                    {
+                        id: comment.cid
+                    },
+                    function(data) {
+                        if(data.status != 200) {
+                            $rootScope.$broadcast('comment::delete::fail', data, dom);
+                            return;
+                        }
+                        $rootScope.$broadcast('comment::delete::success', data, dom);
+                    }
+                );
             });
 
             $rootScope.$on('request::comment::load::prev', function(event) {
@@ -109,6 +149,10 @@ var CommentController = (function() {
                     post: {
                         method: 'POST',
                         url: '/comments'
+                    },
+                    delete: {
+                        method: 'DELETE',
+                        url: '/comments/:id'
                     },
                     like: {
                         method: 'GET',
