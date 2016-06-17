@@ -27,7 +27,8 @@ import java.util.Date;
 /**
  * Created by jhkang on 2016-06-17.
  */
-@Controller("/files")
+@Controller
+@RequestMapping(path = "/files")
 public class FileController {
     @Autowired
     UserRepository userRepository;
