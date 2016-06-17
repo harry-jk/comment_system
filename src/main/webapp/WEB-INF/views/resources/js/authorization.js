@@ -55,7 +55,6 @@ var AuthorizationController = (function() {
                 REQUEST.signup(
                     {},
                     {
-                        uid: user.uid,
                         id: user.id,
                         password: user.password,
                         name: user.name,
