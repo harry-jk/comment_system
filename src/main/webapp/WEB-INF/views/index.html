@@ -51,7 +51,7 @@
                 <div id="cs_contents" >
                     <div class="cs_content" ng-repeat="comment in commentCtl.comments">
                         <div class="cs_profile">
-                            <img class="cs_image" ng-srcset="{{comment.user.profile_image_url}}" alt="" />
+                            <img class="cs_image" ng-src="{{comment.user.profile_image_url}}" alt="" />
                             <span class="cs_name" ng-bind="comment.user.name"></span>
                         </div>
                         <span class="cs_comment" ng-bind="comment.comment"></span>
@@ -120,7 +120,9 @@
                             <div class="form-group">
                                 <label for="cs_profile_modal_photo" class="col-sm-3 control-label">Photo</label>
                                 <div class="col-sm-9">
-                                    <input type="file" class="form-control" id="cs_profile_modal_photo" ng-model="uiCtl.user.profile_image_file" />
+                                    <input type="file" class="form-control" id="cs_profile_modal_photo"
+                                        onchange="angular.element(this).scope().updateFile(this)"
+                                        ng-model="uiCtl.user.profile_image_file" />
                                 </div>
                             </div>
                         </form>

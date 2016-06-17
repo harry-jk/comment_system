@@ -111,6 +111,11 @@ var UIController = (function() {
                 return className;
             }
 
+            $scope.updateFile = function(dom) {
+                context.user.profile_image_file = dom.files[0];
+                console.log(context.user.profile_image_file);
+            }
+
             this.requestJoin = function() {
                 $rootScope.$broadcast('request::authorization::signup', context.user);
             }
