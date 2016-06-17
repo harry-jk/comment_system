@@ -43,7 +43,11 @@ var UIController = (function() {
             }
             this.openEditProfile = function(user) {
                 context.modalType = "EDIT";
-                context.user = user;
+                context.user.id = user.id;
+                context.user.password = user.password;
+                context.user.name = user.name;
+                context.user.description = user.description;
+                context.user.profile_image_url = user.profile_image_url;
                 profileModal.modal('show');
             }
             this.openWrite = function() {
@@ -175,6 +179,7 @@ var UIController = (function() {
             $rootScope.$on('comment::load::success', function(event, data) {
             });
             $rootScope.$on('comment::write::success', function(event, data) {
+                writeModal.modal('hide');
             });
         }]);
     };
