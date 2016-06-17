@@ -29,6 +29,10 @@
 |/comments/:id/like		|POST		|like comment by id		|Required		|
 |/comments/:id/dislike	|POST		|dislike comment by id	|Required		|
 
+#### File
+|Url					|Method		|Description			|Authorization	|
+|-----------------------|-----------|-----------------------|---------------|
+|/files/prodile 		|POST		|upload profile image	|None			|
 
 ###API Response
 ----
@@ -347,5 +351,22 @@
 			"profile_image_url": "/resources/harry.jpg"
 		}
 	}
+}
+```
+
+#### File
+----
+- __POST__ /files/profile
+ - __Parameter__
+
+ |Key	|Value Type	    |Required	|Default	|
+ |------|---------------|-----------|-----------|
+ |file	|MultipartFile	|yes		|			|
+ - __Response__
+```json
+{
+	"request": "/files/profile",
+	"status": 200,
+	"image": "/resources/profile/ffa745e8fc2558a4281985f6da8eae9a994bea1ejpg"
 }
 ```
