@@ -50,7 +50,7 @@
                 <div id="cs_contents" >
                     <div class="cs_content" ng-repeat="comment in commentCtl.comments">
                         <div class="cs_profile">
-                            <img class="cs_image" src="" alt="" />
+                            <img class="cs_image" ng-srcset="{{comment.user.profile_image_url}}" alt="" />
                             <span class="cs_name" ng-bind="comment.user.name"></span>
                         </div>
                         <span class="cs_comment" ng-bind="comment.comment"></span>
@@ -64,12 +64,15 @@
                         <time class="cs_time" ng-bind="commentCtl.replaceTime(comment.created_at)"></time>
                     </div>
                 </div>
-                <div id="cs_indicator">
-                    <a class="cs_page_prev" href="#prev" ng-show="!commentCtl.first" ng-click="uiCtl.requestPrevPage()"> &lt; </a>
-                    <div class="cs_pages">
-                        <a ng-href="#page{{page}}" ng-repeat="page in commentCtl.pages" ng-click="uiCtl.requestPage(page)">{{page}}</a>
+                <div id="cs_indicator_wrap">
+                    <div id="cs_indicator">
+                        <a class="cs_page_prev" href="#prev" ng-class="{cs_hidden: commentCtl.first}" ng-click="uiCtl.requestPrevPage()"> &lt; </a>
+                        <div class="cs_pages">
+                            <a class="cs_page" ng-href="#page{{page}}" ng-class="{cs_current_page: page == commentCtl.page}"
+                                ng-repeat="page in commentCtl.pages" ng-click="uiCtl.requestPage(page)">{{page}}</a>
+                        </div>
+                        <a class="cs_page_next" href="#next" ng-class="{cs_hidden: commentCtl.last}" ng-click="uiCtl.requestNextPage()"> &gt; </a>
                     </div>
-                    <a class="cs_page_next" href="#next" ng-show="!commentCtl.last" ng-click="uiCtl.requestNextPage()"> &gt; </a>
                 </div>
             </div>
         </div>

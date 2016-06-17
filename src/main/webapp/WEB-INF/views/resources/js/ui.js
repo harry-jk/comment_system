@@ -115,22 +115,19 @@ var UIController = (function() {
 
             // Comment list
             this.like = function(comment, event) {
-                $rootScope.$broadcast('request::comment::like', comment, event.currentTarget);
                 if(checkSignin()) {
-
+                        $rootScope.$broadcast('request::comment::like', comment, event.currentTarget);
                 }
             }
 
             this.dislike = function(comment, event) {
-                $rootScope.$broadcast('request::comment::dislike', comment, event.currentTarget);
                 if(checkSignin()) {
-
+                        $rootScope.$broadcast('request::comment::dislike', comment, event.currentTarget);
                 }
             }
             this.requestDeleteComment = function(comment, event) {
-                $rootScope.$broadcast('request::comment::delete', comment, event.currentTarget);
                 if(checkSignin()) {
-
+                    $rootScope.$broadcast('request::comment::delete', comment, event.currentTarget);
                 }
             }
             this.requestPrevPage = function() {
@@ -146,7 +143,9 @@ var UIController = (function() {
 
             // Write Comment
             this.requestWriteComment = function() {
-                $rootScope.$broadcast('request::comment::write', context.comment);
+                if(checkSignin()) {
+                    $rootScope.$broadcast('request::comment::write', context.comment);
+                }
             }
 
             // Events

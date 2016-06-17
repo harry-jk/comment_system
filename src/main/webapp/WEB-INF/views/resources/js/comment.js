@@ -15,54 +15,59 @@ var CommentController = (function() {
             this.replaceTime = function(time) {
                 console.log(time);
                 return "~1분전";
-            }
-            REQUEST.list(
-                {
-                    page: this.page
-                },
-                function(data) {
-                    if(data.status != 200) {
-                        return;
-                    }
-                    context.page = data.page;
-                    context.pageSize = data.size;
-                    context.total = data.totalPage;
-                    context.last = data.last;
-                    context.first = data.first;
-                    context.comments = data.comments;
-                    context.pages = [];
+            };
 
-                    if(data.first) {
-                        context.pages.push(data.page);
-                    } else if(data.last) {
-                        var start = data.page;
-                        if(start < 10) start = 1;
-                        else start = start - 9;
-                        for(var page = start; page <= data.page; ++page) {
-                            context.pages.push(page);
-                        }
-                    } else {
-                        var start = data.page;
-                        if(start < 5) start = 1;
-                        else start = start - 4;
-                        for(var page = start; page <= data.page; ++page) {
-                            context.pages.push(page);
-                        }
-                    }
 
-                    if(context.pages.length < 10) {
-                        var start = context.pages[context.pages.length -1];
-                        if(start < data.totalPage) {
-                            for(var page = start + 1;
-                                page < data.totalPage && context.pages.length <= 10;
-                                ++page) {
+            function requestPage(pageNo) {
+                REQUEST.list(
+                    {
+                        page: pageNo
+                    },
+                    function(data) {
+                        if(data.status != 200) {
+                            return;
+                        }
+                        context.page = data.page;
+                        context.pageSize = data.size;
+                        context.total = data.totalPage;
+                        context.last = data.last;
+                        context.first = data.first;
+                        context.comments = data.comments;
+                        context.pages = [];
+
+                        if(data.first) {
+                            context.pages.push(data.page);
+                        } else if(data.last) {
+                            var start = data.page;
+                            if(start < 10) start = 1;
+                            else start = start - 9;
+                            for(var page = start; page <= data.page; ++page) {
+                                context.pages.push(page);
+                            }
+                        } else {
+                            var start = data.page;
+                            if(start < 5) start = 1;
+                            else if(start + 5 > data.totalPage) start = start - (10 - data.totalPage  + start) + 1;
+                            else start = start - 4;
+                            for(var page = start; page <= data.page; ++page) {
                                 context.pages.push(page);
                             }
                         }
-                    }
-                }
 
-            );
+                        if(context.pages.length < 10) {
+                            var start = context.pages[context.pages.length -1];
+                            if(start < data.totalPage) {
+                                for(var page = start + 1;
+                                    (page <= data.totalPage && context.pages.length < 10);
+                                    ++page) {
+                                    context.pages.push(page);
+                                }
+                            }
+                        }
+                    }
+                );
+            };
+            requestPage(1);
 
 
             // Events
@@ -77,13 +82,14 @@ var CommentController = (function() {
             });
 
             $rootScope.$on('request::comment::load::prev', function(event) {
-
+                if(context.page == 1) return;
+                requestPage(context.page - 1);
             });
             $rootScope.$on('request::comment::load::next', function(event) {
-
+                requestPage(context.page + 1);
             });
             $rootScope.$on('request::comment::load::page', function(event, page) {
-
+                requestPage(page);
             });
 
             $rootScope.$on('request::comment::write', function(event, comment) {

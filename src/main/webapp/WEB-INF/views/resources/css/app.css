@@ -56,7 +56,7 @@
     overflow-x: hidden;
 }
 
-#cs_contents_wrap #cs_indicator
+#cs_contents_wrap #cs_indicator_wrap
 {
     display: flex;
     float: left;
@@ -65,14 +65,39 @@
     border-top: 1px solid #bbb;
 }
 
-#cs_contents_wrap #cs_indicator .cs_pages,
-#cs_contents_wrap #cs_indicator .cs_page_prev,
-#cs_contents_wrap #cs_indicator .cs_page_next
+#cs_indicator_wrap #cs_indicator
 {
-    float: left;
-    width: 100%;
+    display: flex;
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#cs_indicator_wrap #cs_indicator .cs_page_prev,
+#cs_indicator_wrap #cs_indicator .cs_page_next
+{
     align-self: center;
     text-align: center;
+    text-decoration: none;
+}
+
+#cs_indicator_wrap #cs_indicator .cs_pages
+{
+    width: 500px;
+    margin: 0 auto;
+    align-self: center;
+    text-align: center;
+}
+
+#cs_indicator_wrap #cs_indicator .cs_pages .cs_page
+{
+    margin: 0 5px;
+    text-decoration: none;
+}
+#cs_indicator_wrap #cs_indicator .cs_pages .cs_page.cs_current_page
+{
+    font-weight: bold;
+    pointer-events: none;
 }
 
 #cs_contents .cs_content
@@ -103,6 +128,11 @@
 .cs_content .cs_profile .cs_image
 {
     width: 70px;
+    height: 70px;
+    padding: 1px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    object-fit: cover;
 }
 .cs_content .cs_profile .cs_name
 {
